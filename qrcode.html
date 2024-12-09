@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Generate and Download QR Code</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <label for="textInput">Enter Text: </label>
+        <input type="text" id="textInput">
+        <button id="generateButton">Generate QR Code</button>
+    </div>
+
+    <div id="qrcode" style="display: none;"></div>
+
+    <script>
+        var textInput = document.getElementById("textInput");
+        var generateButton = document.getElementById("generateButton");
+        var qrcodeDiv = document.getElementById("qrcode");
+
+        function generateQRCodeAndDownload() {
+            var data = textInput.value;
+
+            if (data.trim() === "") {
+                alert("Please enter some text.");
+                return;
+            }
+
+            var qrcode = new QRCode(qrcodeDiv, {
+                text: data,
+                width: 128,
+                height: 128,
+            });
+
+            var qrCodeDataURL = qrcodeDiv.querySelector("canvas").toDataURL("image/png");
+
+            var tempLink = document.createElement("a");
+            tempLink.href = qrCodeDataURL;
+            tempLink.download = "qr_code.png";
+
+            tempLink.click();
+        }
+
+        generateButton.addEventListener("click", generateQRCodeAndDownload);
+    </script>
+</body>
+
+</html>
